@@ -8,7 +8,9 @@ var idParam = urlParam.get('id');
 async function productSearch() {
     let productCard = "http://localhost:3000/api/products/"+idParam;
     const promise = await fetch(productCard);
+    console.log(promise);
     const reponseJS = await promise.json();
+    console.log(reponseJS);
 
     // Insertion de l'élément img //
     var img = document.createElement('img');
@@ -19,7 +21,6 @@ async function productSearch() {
     // Insertion du nom du produit //
     var text = document.createTextNode(reponseJS.name);
     document.getElementById('title').appendChild(text);
-    console.log(text);
 
     // Insertion du prix //
     var price = document.createTextNode(reponseJS.price);
@@ -29,7 +30,7 @@ async function productSearch() {
     var description = document.createTextNode(reponseJS.description);
     document.getElementById('description').appendChild(description);
 
-    // Inserction des options de couleurs //
+    // Insertion des options de couleurs //
     var colorOption = reponseJS.colors;
     for (let color of colorOption) {
         var option = document.createElement('option');
@@ -39,6 +40,61 @@ async function productSearch() {
     }
 }
 productSearch();
+
+    // Stockage des données dans le stockage local //
+    const btn = document.getElementById('addToCart');
+
+    class item {
+        constructor(id, quantity, colors, price) {
+            this.id = id;
+            this.quantity = quantity;
+            this.colors = colors;
+            this.price = price;
+        }
+    }
+    
+    btn.addEventListener('click', function() { // Au clic sur le bouton //
+        
+        if (localStorage.getItem('monPanier')==null) { // s'il n'y a rien dans le panier //
+            let newItem = new item(idParam, quantity.value, colors.value, price.innerHTML); // Je crée un nouvel item //
+            let totalOrder = [newItem]; // Je mets ce premier canapé dans un tableau //
+            const storageConversion = JSON.stringify(totalOrder); // Je converti en chaine de caractère //
+            localStorage.setItem('monPanier', storageConversion); // Je place tout ce beau monde ds le stock //
+            
+        } else { // sinon (s'il y a déja qqc dans le panier) //
+            let exist = false;
+            let originalData = JSON.parse(localStorage.getItem('monPanier')); // je convertis en données d'origine //
+            for (let object of originalData) { // pour chaque objet du tableau javascript //
+                if(object.id == idParam && object.colors == colors.value) { // Si l'id du tableau est la meme que l'id de l'objet et que la couleur de l'ojet est la meme que la couleur choisie //
+                    object.quantity = object.quantity + quantity.value; //Je modifie la quantité de l'ojet en additionnant les 2 //
+                    exist = true; // l'objet existe dans le tableau (il est ajouté) //
+                } 
+            } 
+            if(exist == false) { // Si l'objet n'existe pas dans le tableau //
+                let newItem = new item(idParam, quantity.value, colors.value, price.innerHTML); // Je crée un nouvel item //
+                originalData.push(newItem);
+            }
+            let strings = JSON.stringify(originalData);
+            localStorage.setItem('monPanier', strings);
+
+        }
+    
+        
+        
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
