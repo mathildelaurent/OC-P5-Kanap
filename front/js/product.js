@@ -8,9 +8,7 @@ var idParam = urlParam.get('id');
 async function productSearch() {
     let productCard = "http://localhost:3000/api/products/"+idParam;
     const promise = await fetch(productCard);
-    console.log(promise);
     const reponseJS = await promise.json();
-    console.log(reponseJS);
 
     // Insertion de l'élément img //
     var img = document.createElement('img');
@@ -66,7 +64,9 @@ productSearch();
             let originalData = JSON.parse(localStorage.getItem('monPanier')); // je convertis en données d'origine //
             for (let object of originalData) { // pour chaque objet du tableau javascript //
                 if(object.id == idParam && object.colors == colors.value) { // Si l'id du tableau est la meme que l'id de l'objet et que la couleur de l'ojet est la meme que la couleur choisie //
-                    object.quantity = object.quantity + quantity.value; //Je modifie la quantité de l'ojet en additionnant les 2 //
+                    let initialQuantity = parseFloat(object.quantity);
+                    let newQuantity = parseFloat(quantity.value);
+                    object.quantity = initialQuantity + newQuantity; //Je modifie la quantité de l'ojet en additionnant les 2 //
                     exist = true; // l'objet existe dans le tableau (il est ajouté) //
                 } 
             } 

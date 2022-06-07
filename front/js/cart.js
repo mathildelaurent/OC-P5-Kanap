@@ -173,8 +173,6 @@ function quantityModification() {
             window.location.href = window.location.href;
         })
     }
-
-    
 }
 
 function order() {
@@ -216,9 +214,14 @@ function order() {
                 },
                 body: JSON.stringify(formData),
             })
-        .then(document.location.href = 'confirmation.html')
-        .then(localStorage.clear('monPanier'));
-        }
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                localStorage.clear('monPanier');
+                localStorage.setItem('order', data.orderId);
+                document.location.href = 'confirmation.html';
+            }); 
+        };
     });
 }
 
