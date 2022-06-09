@@ -6,6 +6,7 @@ console.log(originalData);
 async function productSearch() {
    
     // Pour chaque kanap de mon panier //
+    var totalPrice = 0;
     for (let kanap of originalData) {
         let idKanap = kanap.id; // Je vais chercher l'ID de cet objet //
         let productCard = "http://localhost:3000/api/products/"+idKanap; // Je récupère l'API correspondant à cet ID //
@@ -56,6 +57,7 @@ async function productSearch() {
         var price = document.createTextNode(reponseJS.price + " €");
         pPrice.appendChild(price);
         divDescription.appendChild(pPrice);
+        totalPrice = totalPrice + (kanap.quantity * reponseJS.price);
 
         // Insertion de la DIV cart__item__content__settings //
         var divSettings = document.createElement('div');
@@ -103,7 +105,7 @@ async function productSearch() {
     document.getElementById('totalQuantity').appendChild(totalQuantity);
 
     // Insertion du montant total //
-    var totalAmount = document.createTextNode(totalCalculation());
+    var totalAmount = document.createTextNode(totalPrice);
     document.getElementById('totalPrice').appendChild(totalAmount);
 
     deleteProduct();
@@ -111,17 +113,6 @@ async function productSearch() {
 
 }
 productSearch();
-
-
-// Calcul du montant total //
-
-function totalCalculation() {
-    let sum = 0;
-    for (let item of originalData) {
-        sum += item.quantity * item.price;
-    }
-    return sum
-}   
 
 // Calcul de la quantité d'articles//
 
