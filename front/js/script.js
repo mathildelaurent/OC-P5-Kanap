@@ -7,7 +7,7 @@ async function apiDatas() {
   
   // Implémentation du code dynamique //
   const items = document.getElementById('items');
-  console.log(items);
+
   
   for (let object of reponseJS) {
 

@@ -6,36 +6,36 @@ var idParam = urlParam.get('id');
 
 // Recherche de l'API suivant l'ID produit //
 async function productSearch() {
-let productCard = "http://localhost:3000/api/products/"+idParam;
-const promise = await fetch(productCard);
-const reponseJS = await promise.json();
+    let productCard = "http://localhost:3000/api/products/"+idParam;
+    const promise = await fetch(productCard);
+    const reponseJS = await promise.json();
 
-// Insertion de l'élément img //
-var img = document.createElement('img');
-img.src = reponseJS.imageUrl;
-img.alt = reponseJS.altTxt;
-document.querySelector('.item__img').appendChild(img);
+    // Insertion de l'élément img //
+    var img = document.createElement('img');
+    img.src = reponseJS.imageUrl;
+    img.alt = reponseJS.altTxt;
+    document.querySelector('.item__img').appendChild(img);
 
-// Insertion du nom du produit //
-var text = document.createTextNode(reponseJS.name);
-document.getElementById('title').appendChild(text);
+    // Insertion du nom du produit //
+    var text = document.createTextNode(reponseJS.name);
+    document.getElementById('title').appendChild(text);
 
-// Insertion du prix //
-var price = document.createTextNode(reponseJS.price);
-document.getElementById('price').appendChild(price);
+    // Insertion du prix //
+    var price = document.createTextNode(reponseJS.price);
+    document.getElementById('price').appendChild(price);
 
-// Insertion de la despcription //
-var description = document.createTextNode(reponseJS.description);
-document.getElementById('description').appendChild(description);
+    // Insertion de la despcription //
+    var description = document.createTextNode(reponseJS.description);
+    document.getElementById('description').appendChild(description);
 
-// Insertion des options de couleurs //
-var colorOption = reponseJS.colors;
-for (let color of colorOption) {
-    var option = document.createElement('option');
-    var optionText = document.createTextNode(color);
-    option.appendChild(optionText);
-    document.getElementById('colors').appendChild(option);
-}
+    // Insertion des options de couleurs //
+    var colorOption = reponseJS.colors;
+    for (let color of colorOption) {
+        var option = document.createElement('option');
+        var optionText = document.createTextNode(color);
+        option.appendChild(optionText);
+        document.getElementById('colors').appendChild(option);
+    }
 }
 productSearch();
 
@@ -78,9 +78,15 @@ btn.addEventListener('click', function() { // Au clic sur le bouton //
 
     }
 
+    if(quantity.value == 0) {
+        alert("Vous n'avez pas sélectionné la quantité");
+    }if(colors.value == "") {
+        alert("Vous n'avez pas choisi de couleur");
+    }else{
+        alert("Produit(s) ajouté(s) au panier");
+    }
     
-    
-})
+});
 
 
 

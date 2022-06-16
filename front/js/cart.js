@@ -1,7 +1,7 @@
 console.log("connectée");
 
 const originalData = JSON.parse(localStorage.getItem('monPanier')); // Je converti aux valeurs d'origine //
-console.log(originalData);
+
 // Recherche des API //
 async function productSearch() {
    
@@ -166,8 +166,6 @@ function quantityModification() {
     }
 }
 
-function order() {
-    validation();
     btnOrder = document.getElementById('order');
     btnOrder.addEventListener('click', function(e) {
         e.preventDefault();
@@ -207,18 +205,12 @@ function order() {
             })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 localStorage.clear('monPanier');
                 localStorage.setItem('order', data.orderId);
                 document.location.href = 'confirmation.html';
             }); 
         };
     });
-}
-
-order();
-
-function validation() {
 
     // Validation de l'email //
     let email = document.getElementById('email');
@@ -231,9 +223,6 @@ function validation() {
         let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
         let testEmail = emailRegExp.test(input.value);
         let text = input.nextElementSibling;
-        if(email.value == ""){
-            console.log('nok');
-        }
 
         if(testEmail == false) { // Si le test est faux //
             text.innerHTML = 'Adresse email non valide'; // Mettre une phrase de non validité //
@@ -341,7 +330,7 @@ function validation() {
         }
         return testCity;
     }
-}
+
 
 
 
