@@ -51,41 +51,38 @@ class item {
 }
 
 btn.addEventListener('click', function() { // Au clic sur le bouton //
-    
-    if (localStorage.getItem('monPanier')==null) { // s'il n'y a rien dans le panier //
-        let newItem = new item(idParam, quantity.value, colors.value); // Je crée un nouvel item //
-        let totalOrder = [newItem]; // Je mets ce premier canapé dans un tableau //
-        const storageConversion = JSON.stringify(totalOrder); // Je converti en chaine de caractère //
-        localStorage.setItem('monPanier', storageConversion); // Je place tout ce beau monde ds le stock //
-        
-    } else { // sinon (s'il y a déja qqc dans le panier) //
-        let exist = false;
-        let originalData = JSON.parse(localStorage.getItem('monPanier')); // je convertis en données d'origine //
-        for (let object of originalData) { // pour chaque objet du tableau javascript //
-            if(object.id == idParam && object.colors == colors.value) { // Si l'id du tableau est la meme que l'id de l'objet et que la couleur de l'ojet est la meme que la couleur choisie //
-                let initialQuantity = parseFloat(object.quantity);
-                let newQuantity = parseFloat(quantity.value);
-                object.quantity = initialQuantity + newQuantity; //Je modifie la quantité de l'ojet en additionnant les 2 //
-                exist = true; // l'objet existe dans le tableau (il est ajouté) //
-            } 
-        } 
-        if(exist == false) { // Si l'objet n'existe pas dans le tableau //
-            let newItem = new item(idParam, quantity.value, colors.value); // Je crée un nouvel item //
-            originalData.push(newItem);
-        }
-        let strings = JSON.stringify(originalData);
-        localStorage.setItem('monPanier', strings);
 
-    }
-
-    if(quantity.value == 0) {
+    if(quantity.value <= 0) {
         alert("Vous n'avez pas sélectionné la quantité");
-    }if(colors.value == "") {
+    }else if(colors.value == "") {
         alert("Vous n'avez pas choisi de couleur");
     }else{
-        alert("Produit(s) ajouté(s) au panier");
+        if (localStorage.getItem('monPanier')==null) { // s'il n'y a rien dans le panier //
+            let newItem = new item(idParam, quantity.value, colors.value); // Je crée un nouvel item //
+            let totalOrder = [newItem]; // Je mets ce premier canapé dans un tableau //
+            const storageConversion = JSON.stringify(totalOrder); // Je converti en chaine de caractère //
+            localStorage.setItem('monPanier', storageConversion); // Je place tout ce beau monde ds le stock //
+            
+        } else { // sinon (s'il y a déja qqc dans le panier) //
+            let exist = false;
+            let originalData = JSON.parse(localStorage.getItem('monPanier')); // je convertis en données d'origine //
+            for (let object of originalData) { // pour chaque objet du tableau javascript //
+                if(object.id == idParam && object.colors == colors.value) { // Si l'id du tableau est la meme que l'id de l'objet et que la couleur de l'ojet est la meme que la couleur choisie //
+                    let initialQuantity = parseFloat(object.quantity);
+                    let newQuantity = parseFloat(quantity.value);
+                    object.quantity = initialQuantity + newQuantity; //Je modifie la quantité de l'ojet en additionnant les 2 //
+                    exist = true; // l'objet existe dans le tableau (il est ajouté) //
+                } 
+            } 
+            if(exist == false) { // Si l'objet n'existe pas dans le tableau //
+                let newItem = new item(idParam, quantity.value, colors.value); // Je crée un nouvel item //
+                originalData.push(newItem);
+            }
+            let strings = JSON.stringify(originalData);
+            localStorage.setItem('monPanier', strings);
     }
-    
+    alert("Produit(s) ajouté(s) au panier");
+    }
 });
 
 
