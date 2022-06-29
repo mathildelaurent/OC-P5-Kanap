@@ -1,12 +1,14 @@
 console.log("connectée");
 
+import Kanap from './Kanap.js';
+
 // Recherche de l'ID dans l'URL //
 var urlParam =  new URLSearchParams(window.location.search);
 var idParam = urlParam.get('id'); 
 
 // Recherche de l'API suivant l'ID produit //
-async function productSearch() {
-    let productCard = "http://localhost:3000/api/products/"+idParam;
+async function productSearch(id) {
+    let productCard = "http://localhost:3000/api/products/"+id;
     const promise = await fetch(productCard);
     const reponseJS = await promise.json();
 
@@ -37,28 +39,20 @@ async function productSearch() {
         document.getElementById('colors').appendChild(option);
     }
 }
-productSearch();
+productSearch(idParam);
 
 // Stockage des données dans le stockage local //
 const btn = document.getElementById('addToCart');
 
-class item {
-    constructor(id, quantity, colors) {
-        this.id = id;
-        this.quantity = quantity;
-        this.colors = colors;
-    }
-}
-
 btn.addEventListener('click', function() { // Au clic sur le bouton //
 
-    if(quantity.value <= 0) {
-        alert("Vous n'avez pas sélectionné la quantité");
+    if(quantity.value <= 0 || quantity.value > 100) {
+        alert("Il y a un problème avec la quantité");
     }else if(colors.value == "") {
         alert("Vous n'avez pas choisi de couleur");
     }else{
         if (localStorage.getItem('monPanier')==null) { // s'il n'y a rien dans le panier //
-            let newItem = new item(idParam, quantity.value, colors.value); // Je crée un nouvel item //
+            let newItem = new Kanap(idParam, quantity.value, colors.value); // Je crée un nouvel item //
             let totalOrder = [newItem]; // Je mets ce premier canapé dans un tableau //
             const storageConversion = JSON.stringify(totalOrder); // Je converti en chaine de caractère //
             localStorage.setItem('monPanier', storageConversion); // Je place tout ce beau monde ds le stock //
@@ -75,7 +69,7 @@ btn.addEventListener('click', function() { // Au clic sur le bouton //
                 } 
             } 
             if(exist == false) { // Si l'objet n'existe pas dans le tableau //
-                let newItem = new item(idParam, quantity.value, colors.value); // Je crée un nouvel item //
+                let newItem = new Kanap(idParam, quantity.value, colors.value); // Je crée un nouvel item //
                 originalData.push(newItem);
             }
             let strings = JSON.stringify(originalData);

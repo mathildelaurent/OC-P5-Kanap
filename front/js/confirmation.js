@@ -1,11 +1,9 @@
 console.log("connectée");
 
-// Rechercher de l'id dans le local storage //
-const orderStorage = localStorage.getItem('order');
-console.log(orderStorage);
+// Rechercher de l'id dans l'URL' //
+let urlParam =  new URLSearchParams(window.location.search);
+let dataOrderId = urlParam.get('orderid');
 
-// Insertion du num de commande (ID) dans HTML //
-var dataId = document.createTextNode(orderStorage);
-document.getElementById('orderId').appendChild(dataId);
-
-localStorage.clear('order');
+// Insertion du numéro de commande //
+let orderId = document.createTextNode(dataOrderId);
+document.getElementById('orderId').appendChild(orderId);
